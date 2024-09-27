@@ -4,6 +4,8 @@
 	
 	<listeners>
 		<listener class-name="api.utilities.ExtentReportManager"></listener>
+		<listener class-name="api.utilities.LogHeaderSuiteListener"></listener> <!-- Add the new listener -->
+
 	</listeners>
 	
   <test thread-count="5" name="User_Test">

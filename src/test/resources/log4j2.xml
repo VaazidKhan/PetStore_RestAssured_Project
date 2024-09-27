@@ -4,29 +4,33 @@
 
         <!-- Console Appender -->
         <Console name="Console" target="SYSTEM_OUT">
+            <!-- Display log pattern in the console with date, level, class, and message -->
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
         </Console>
 
-        <!-- Rolling File Appender to log to a unique file each time -->
+        <!-- Rolling File Appender to log to a unique file per system date -->
         <RollingFile name="FileAppender" 
-                     fileName="logs/app-%d{yyyy-MM-dd-HH-mm-ss}.log" 
-                     filePattern="logs/app-%d{yyyy-MM-dd-HH-mm-ss}.log.gz">
-            <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</pattern>
-            </PatternLayout>
+                     fileName="logs/App-${date:yyyy-MM-dd}.log"
+                     filePattern="logs/App-%d{yyyy-MM-dd}.log">
+                     
+            <!-- Simplified log format, removing repeated headers -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+            
+            <!-- Policies to handle file rolling -->
             <Policies>
-                <!-- Rolls the file every day and compresses the old logs -->
+                <!-- Rolls the file every 24 hours -->
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <!-- Roll the file after it exceeds 10MB -->
+                <!-- Rolls the file after it exceeds 10MB -->
                 <SizeBasedTriggeringPolicy size="10MB"/>
             </Policies>
+
         </RollingFile>
 
     </Appenders>
 
     <Loggers>
-        <!-- Define logging for your classes -->
-        <Logger name="com.yourpackage" level="info" additivity="false">
+        <!-- Application-specific logger with a custom package -->
+        <Logger name="com.demo.ng_crs" level="info" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="FileAppender"/>
         </Logger>
